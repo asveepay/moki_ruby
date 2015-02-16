@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "moki_ruby"
   spec.version       = MokiRuby::VERSION
   spec.authors       = ["Trey Springer"]
-  spec.email         = ["tspringer@bellycardj.com"]
+  spec.email         = ["tspringer@bellycard.com"]
   spec.summary       = %q{A gem for interacting with the Moki Total Control API.}
   spec.description   = %q{Manage your MDM-controlled devices with Moki and the moki_ruby gem.}
   spec.homepage      = "https://www.github.com/bellycard/moki_ruby"
