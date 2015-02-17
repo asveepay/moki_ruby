@@ -37,7 +37,7 @@ class MokiAPI
     end
   end
 
-  def self.get_action(device_id, action_id)
+  def self.action(device_id, action_id)
     raise "Must pass an action id" unless action_id
 
     if DeviceIdentifier.is_udid?(device_id)
