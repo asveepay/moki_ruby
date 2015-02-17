@@ -1,5 +1,7 @@
 # MokiRuby
 
+!(travis-status)[https://travis-ci.org/bellycard/moki_ruby.svg]
+
 A ruby gem for interacting with the Moki API, as a part of Moki Total
 Control and Moki Management.
 
