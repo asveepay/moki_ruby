@@ -7,14 +7,14 @@ describe MokiAPI do
       ENV['MOKI_API_URL'] = ''
       ENV['MOKI_TENANT_ID'] = 'abcd123-test'
       ENV['MOKI_API_KEY'] = 'secret-key'
-      expect { MokiAPI.issue_request(:get, "/test", {}) }.to raise_error
+      expect { MokiAPI.full_url("/test") }.to raise_error
     end
 
     it "MOKI_TENANT_ID raises an error" do
       ENV['MOKI_API_URL'] = 'http://localhost:9292'
       ENV['MOKI_TENANT_ID'] = ''
       ENV['MOKI_API_KEY'] = 'secret-key'
-      expect { MokiAPI.issue_request(:get, "/test", {}) }.to raise_error
+      expect { MokiAPI.full_url("/test") }.to raise_error
     end
 
     it "MOKI_API_KEY raises an error" do
@@ -26,9 +26,11 @@ describe MokiAPI do
   end
 
   describe "with all environment variables set" do
-    ENV['MOKI_API_URL'] = 'http://localhost:9292'
-    ENV['MOKI_TENANT_ID'] = 'abcd123-test'
-    ENV['MOKI_API_KEY'] = 'secret-key'
+    before do
+      ENV['MOKI_API_URL'] = 'http://localhost:9292'
+      ENV['MOKI_TENANT_ID'] = 'abcd123-test'
+      ENV['MOKI_API_KEY'] = 'secret-key'
+    end
 
     it 'hits the iosprofiles endpoint correctly' do
       expect(MokiAPI).to receive(:issue_request) { |method, url, options|

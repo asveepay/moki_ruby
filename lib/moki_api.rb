@@ -24,12 +24,13 @@ class MokiAPI
   end
 
   def self.full_url(path)
+    raise "No Moki URL Provided. Set ENV['MOKI_API_URL']."    if ENV['MOKI_API_URL'].nil? || ENV['MOKI_API_URL'].empty?
+    raise "No Tenant ID Provided. Set ENV['MOKI_TENANT_ID']." if ENV['MOKI_TENANT_ID'].nil? || ENV['MOKI_TENANT_ID'].empty?
+
     ENV['MOKI_API_URL'] + BASE_URL + ENV['MOKI_TENANT_ID'] + path
   end
 
   def self.issue_request(method, url, options)
-    raise "No Moki URL Provided. Set ENV['MOKI_API_URL']."    if ENV['MOKI_API_URL'].nil? || ENV['MOKI_API_URL'].empty?
-    raise "No Tenant ID Provided. Set ENV['MOKI_TENANT_ID']." if ENV['MOKI_TENANT_ID'].nil? || ENV['MOKI_TENANT_ID'].empty?
     raise "No API Key Provided. Set ENV['MOKI_API_KEY']."     if ENV['MOKI_API_KEY'].nil? || ENV['MOKI_API_KEY'].empty?
 
     future = Celluloid::Future.new do
