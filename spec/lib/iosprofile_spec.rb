@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'moki_ruby/iosprofile'
 
 describe IOSProfile do
-  let(:response_hash) { { "id" => "01234657678-abcd123-test",
+  let(:response_hash) { { "id" => "01234699-5767-8abc-d123-ffffffffffff",
                           "lastSeen" => 1413913980475,
                           "name" => "Profile Name",
                           "displayName" => "Profile Display Name",
