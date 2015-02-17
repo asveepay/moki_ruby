@@ -14,13 +14,7 @@ class MokiAPI
   end
 
   def self.device_profile_list(device_id)
-    if DeviceIdentifier.is_udid?(device_id)
-      issue_request(:get, full_url("/devices/#{ device_id }/profiles"), {})
-    elsif DeviceIdentifier.is_serial?(device_id)
-      issue_request(:get, full_url("/devices/sn-!-#{ device_id }/profiles"), {})
-    else
-      raise "Must pass a serial number or UDID to get device profile list"
-    end
+    issue_request(:get, full_url("/devices/#{ device_id }/profiles"), {})
   end
 
   def self.tenant_managed_app_list
@@ -35,6 +29,10 @@ class MokiAPI
     else
       raise "Must pass a serial number or UDID to get device profile list"
     end
+  end
+
+  def self.perform_action(device_id, body_hash)
+    issue_request(:put, full_url("/devices/#{ device_id }/actions"), body_hash)
   end
 
   def self.action(device_id, action_id)

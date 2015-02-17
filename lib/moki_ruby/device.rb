@@ -21,7 +21,30 @@ module MokiRuby
       end
     end
 
+    def profiles
+      MokiAPI.device_profile_list(device_id_param)
+    end
+
+    def install_app
+      params = body_hash.merge({ "action" => 'install_app' })
+      # Not sure how Management Flag is determined
+      params["payload"]["ManagementFlags"] = 1
+
+      MokiAPI.perform_action(device_id_param, params)
+    end
+
     private
+
+    def body_hash
+      {
+        "thirdPartyUser" => "itsmebro",
+        "clientName" => "Some Client Name",
+        "itemName" => "MokiTouch2.0",
+        "notify" => true,
+        "payload" => { "identifier" => "com.mokimobility.mokitouch2",
+                       "version" => "1.1.1" }
+      }
+    end
 
     def is_serial?(id)
       (!id.nil? && id.length == 12)
