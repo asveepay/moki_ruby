@@ -2,12 +2,12 @@ class DeviceManagedApp
   attr_accessor :status, :app_identifier, :management_flags
 
   def self.from_hash(input_hash)
-    new_profile = self.new
-    new_profile.status = input_hash['Status']
-    new_profile.app_identifier = input_hash['appIdentifier']
-    new_profile.management_flags = input_hash['ManagementFlags']
+    new_app = self.new
+    new_app.status = input_hash['Status']
+    new_app.app_identifier = input_hash['appIdentifier']
+    new_app.management_flags = input_hash['ManagementFlags']
 
-    new_profile
+    new_app
   end
 
   def to_hash
