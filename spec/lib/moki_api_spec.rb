@@ -108,18 +108,18 @@ describe MokiAPI do
       }.and_return('{}')
       MokiAPI.tenant_managed_app_list
     end
-  end
 
-  describe "perform action" do
-    it 'performs put request to action endpoint with provided parameters' do
-      body_hash = { foo: 'bar' }
-      expect(MokiAPI).to receive(:issue_request) { |method, url, options|
-        expect(method).to eq(:put)
-        expect(url).to eq("http://localhost:9292/rest/v1/api/tenants/#{ ENV['MOKI_TENANT_ID'] }/devices/abcd1234-1234-1234-1234-abcdef123456/actions")
-        expect(options).to eq body_hash
-      }.and_return('{}')
+    describe "perform action" do
+      it 'performs put request to action endpoint with provided parameters' do
+        body_hash = { foo: 'bar' }
+        expect(MokiAPI).to receive(:issue_request) { |method, url, options|
+          expect(method).to eq(:put)
+          expect(url).to eq("http://localhost:9292/rest/v1/api/tenants/#{ ENV['MOKI_TENANT_ID'] }/devices/abcd1234-1234-1234-1234-abcdef123456/actions")
+          expect(options).to eq body_hash
+        }.and_return('{}')
 
-      MokiAPI.perform_action('abcd1234-1234-1234-1234-abcdef123456', body_hash)
+        MokiAPI.perform_action('abcd1234-1234-1234-1234-abcdef123456', body_hash)
+      end
     end
   end
 end

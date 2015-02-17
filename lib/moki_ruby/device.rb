@@ -30,7 +30,8 @@ module MokiRuby
       # Not sure how Management Flag is determined
       params["payload"]["ManagementFlags"] = 1
 
-      MokiAPI.perform_action(device_id_param, params)
+      data = MokiAPI.perform_action(device_id_param, params).value
+      Action.from_hash(data.body)
     end
 
     private

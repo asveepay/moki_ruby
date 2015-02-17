@@ -53,26 +53,33 @@ describe MokiRuby::Device do
   end
 
   describe "#install_app" do
-    describe "store app" do
-      it "calls MokiApi.perform with store app parameters" do
+    it "calls MokiApi.perform with store app parameters" do
 
-        params = { "action" => "install_app",
-                   "thirdPartyUser" =>  "itsmebro",
-                   "clientName" =>  "Some Client Name",
-                   "itemName"  =>  "MokiTouch2.0",
-                   "notify" =>  true,
+      params = { "action" => "install_app",
+                 "thirdPartyUser" =>  "itsmebro",
+                 "clientName" =>  "Some Client Name",
+                 "itemName"  =>  "MokiTouch2.0",
+                 "notify" =>  true,
+                 "payload" =>  { "ManagementFlags" => 1,
+                                 "identifier" => "com.mokimobility.mokitouch2",
+                                 "version" => "1.1.1" } }
+
+      
+     response =  { 
+                   "id" => "b4d71a15­183b­4971­a3bd­d139754a40fe",
+                   "lastSeen" => 1420583405416,
+                   "action" => "install_app",
+                   "status" => "created",
+                   "clientName" => "Web",
+                   "itemName" => "Profile Name",
+                   "thirdPartyUser" => "itsmebro",
                    "payload" =>  { "ManagementFlags" => 1,
                                    "identifier" => "com.mokimobility.mokitouch2",
-                                   "version" => "1.1.1" } }
+                                   "version" => "1.1.1" }
+                 }
 
-        expect(MokiAPI).to receive(:perform_action).with(device.device_id_param, params)
-        device.install_app
-      end
-    end
-
-    describe "enterprise app" do
-      it "calls MokiApi.perform with enterprise app parameters" do
-      end
+      expect(MokiAPI).to receive_message_chain(:perform_action, :value).and_return(Hashie::Mash.new({ body: response, status: 200, headers: {} }))
+      device.install_app
     end
   end
 end
