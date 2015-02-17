@@ -35,6 +35,8 @@ The following methods have been built out:
 - `MokiRuby.ios_profiles` asks for all current profiles associated with this tenant.
 - `MokiRuby.device_profiles(device_id)` asks for all profiles installed
   on the provided device. `device_id` must be a UDID or a serial number.
+- `MokiRuby.tenant_managed_apps` asks for all apps associaited with this
+  tenant.
 - `MokiRuby.device_managed_apps(device_id)` asks for all managed apps on
   a specific device, provided in a simplified list.
 
