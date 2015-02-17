@@ -61,5 +61,27 @@ describe MokiAPI do
         expect { MokiAPI.device_profile_list("ermishness-nope") }.to raise_error
       end
     end
+
+    describe "device managed app list" do
+      it 'hits the endpoint correctly with a UDID' do
+        expect(MokiAPI).to receive(:issue_request) { |method, url, options|
+          expect(method).to eq(:get)
+          expect(url).to eq("http://localhost:9292/rest/v1/api/tenants/#{ ENV['MOKI_TENANT_ID'] }/devices/abcd1234-1234-1234-1234-abcdef123456/managedapps")
+        }.and_return('{}')
+        MokiAPI.device_managed_app_list("abcd1234-1234-1234-1234-abcdef123456")
+      end
+
+      it 'hits the endpoint correctly with a serial number' do
+        expect(MokiAPI).to receive(:issue_request) { |method, url, options|
+          expect(method).to eq(:get)
+          expect(url).to eq("http://localhost:9292/rest/v1/api/tenants/#{ ENV['MOKI_TENANT_ID'] }/devices/sn-!-ABCDEFGHIJ12/managedapps")
+        }.and_return('{}')
+        MokiAPI.device_managed_app_list("ABCDEFGHIJ12")
+      end
+
+      it 'raises an error if not given a serial or udid' do
+        expect { MokiAPI.device_managed_app_list("ermishness-nope") }.to raise_error
+      end
+    end
   end
 end

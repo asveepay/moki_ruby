@@ -23,6 +23,16 @@ class MokiAPI
     end
   end
 
+  def self.device_managed_app_list(device_id)
+    if DeviceIdentifier.is_udid?(device_id)
+      issue_request(:get, full_url("/devices/#{ device_id }/managedapps"), {})
+    elsif DeviceIdentifier.is_serial?(device_id)
+      issue_request(:get, full_url("/devices/sn-!-#{ device_id }/managedapps"), {})
+    else
+      raise "Must pass a serial number or UDID to get device profile list"
+    end
+  end
+
   def self.full_url(path)
     raise "No Moki URL Provided. Set ENV['MOKI_API_URL']."    if ENV['MOKI_API_URL'].nil? || ENV['MOKI_API_URL'].empty?
     raise "No Tenant ID Provided. Set ENV['MOKI_TENANT_ID']." if ENV['MOKI_TENANT_ID'].nil? || ENV['MOKI_TENANT_ID'].empty?
