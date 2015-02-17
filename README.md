@@ -1,6 +1,7 @@
 # MokiRuby
 
-[![travis-status](https://travis-ci.org/bellycard/moki_ruby.svg)](https://travis-ci.org/bellycard/moki_ruby)
+[![travis-status](https://travis-ci.org/bellycard/moki_ruby.svg)](https://travis-ci.org/bellycard/moki_ruby) [![Gem
+Version](https://badge.fury.io/rb/moki_ruby.svg)](http://badge.fury.io/rb/moki_ruby)
 
 A ruby gem for interacting with the Moki API, as a part of Moki Total
 Control and Moki Management.
