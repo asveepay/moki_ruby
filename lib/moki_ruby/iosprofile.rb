@@ -1,20 +1,26 @@
 class IOSProfile
-  attr_accessor :id, :lastSeen, :name, :displayName, :description, :identifier
+  attr_accessor :id, :last_seen, :name, :display_name, :description, :identifier
 
   def self.from_hash(input_hash)
     new_profile = self.new
-    %w(id lastSeen name displayName description identifier).each do |attr|
-      new_profile.send("#{ attr }=", input_hash[attr])
-    end
+    new_profile.id = input_hash["id"]
+    new_profile.last_seen = input_hash["lastSeen"]
+    new_profile.name = input_hash["name"]
+    new_profile.display_name = input_hash["displayName"]
+    new_profile.description = input_hash["description"]
+    new_profile.identifier = input_hash["identifier"]
 
     new_profile
   end
 
   def to_hash
-    {}.tap do |hash|
-      self.instance_variables.each do |var|
-        hash[var.to_s.delete("@")] = instance_variable_get(var)
-      end
-    end
+    {
+      "id" => self.id,
+      "lastSeen" => self.last_seen,
+      "name" => self.name,
+      "displayName" => self.display_name,
+      "description" => self.description,
+      "identifier" => self.identifier
+    }
   end
 end

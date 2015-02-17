@@ -9,20 +9,26 @@ describe IOSProfile do
                           "description" => "Profile Description",
                           "identifier" => "abcdef12345-abc-123-ffeea.test" } }
 
-  let(:attrs) { %w(id lastSeen name displayName description identifier) }
-
   it "will load from a hash with string keys" do
     profile = IOSProfile.from_hash(response_hash)
-    attrs.each do |attribute|
-      expect(profile.send(attribute)).to eq(response_hash[attribute])
-    end
+
+    expect(profile.id).to eq(response_hash["id"])
+    expect(profile.last_seen).to eq(response_hash["lastSeen"])
+    expect(profile.name).to eq(response_hash["name"])
+    expect(profile.display_name).to eq(response_hash["displayName"])
+    expect(profile.description).to eq(response_hash["description"])
+    expect(profile.identifier).to eq(response_hash["identifier"])
   end
 
   it "will convert the response to a hash" do
     profile = IOSProfile.new
-    attrs.each do |attribute|
-      profile.send("#{ attribute }=", response_hash[attribute])
-    end
+    profile.id = response_hash["id"]
+    profile.last_seen = response_hash["lastSeen"]
+    profile.name = response_hash["name"]
+    profile.display_name = response_hash["displayName"]
+    profile.description = response_hash["description"]
+    profile.identifier = response_hash["identifier"]
+
     expect(profile.to_hash).to eq(response_hash)
   end
 end
