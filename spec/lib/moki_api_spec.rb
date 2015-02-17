@@ -84,6 +84,34 @@ describe MokiAPI do
       end
     end
 
+    describe "action" do
+      let(:action_id) { "b4d71a15­183b­4971­a3bd­d139754a40fe" }
+
+      it 'hits the endpoint correctly with a UDID and action id' do
+        expect(MokiAPI).to receive(:issue_request) { |method, url, options|
+          expect(method).to eq(:get)
+          expect(url).to eq("http://localhost:9292/rest/v1/api/tenants/#{ ENV['MOKI_TENANT_ID'] }/devices/abcd1234-1234-1234-1234-abcdef123456/actions/#{action_id}")
+        }.and_return('{}')
+        MokiAPI.action("abcd1234-1234-1234-1234-abcdef123456", "b4d71a15­183b­4971­a3bd­d139754a40fe")
+      end
+
+      it 'hits the endpoint correctly with a UDID and action id' do
+        expect(MokiAPI).to receive(:issue_request) { |method, url, options|
+          expect(method).to eq(:get)
+          expect(url).to eq("http://localhost:9292/rest/v1/api/tenants/#{ ENV['MOKI_TENANT_ID'] }/devices/sn-!-ABCDEFGHIJ12/actions/#{action_id}")
+        }.and_return('{}')
+        MokiAPI.action("ABCDEFGHIJ12", "b4d71a15­183b­4971­a3bd­d139754a40fe")
+      end
+
+      it 'raises an error if not given a serial or udid' do
+        expect { MokiAPI.action("ermishness-nope", action_id) }.to raise_error
+      end
+
+      it 'raises an error if not given an action id' do
+        expect { MokiAPI.action("abcd1234-1234-1234-1234-abcdef123456") }.to raise_error
+      end
+    end
+
     it 'hits the iosprofiles endpoint correctly' do
       expect(MokiAPI).to receive(:issue_request) { |method, url, options|
         expect(method).to eq(:get)
