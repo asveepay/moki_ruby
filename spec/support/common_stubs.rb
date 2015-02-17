@@ -9,6 +9,10 @@ def load_good_stubs
 
   @tenant_managed_app_stub_response = [{ "id" => "30dedb70­62a9­41b8­b5f0­c960d7d8f79a", "lastSeen" => 1384278494336, "name" => "MokiTouch 2.0", "identifier" => "com.mokimobility.mokitouch2", "version" => "1.1.1", "ManagementFlags" => 0, "iTunesStoreID" => "733151730" },
                                        { "id" => "30dedb71­62b9­41b8­b5f0­c960d7d8f79a", "lastSeen" => 1423524426266, "name" => "Belly Merchant App", "identifier" => "com.belly.flop.html.enterprise", "version" => "3.0", "ManagementFlags" => 1, "ManifestURL" => "https://www.bellycard.com/" }]
+  
+ @action_stub_response = { "id" => "b4d71a15­183b­4971­a3bd­d139754a40fe", "lastSeen" => 1420583405416,
+  "action" => "removeprofile", "status" => "completed", "clientName" => "Web", "itemName" => "Profile Name",
+  "thirdPartyUser" => "itsmebro", "payload" => "{profile Identifier}", "note" => "test" }
 
   allow(MokiAPI).to receive_message_chain(:ios_profiles, :value).
                  and_return(Hashie::Mash.new({ body: @iosprofiles_stub_response,
@@ -27,6 +31,11 @@ def load_good_stubs
 
   allow(MokiAPI).to receive_message_chain(:tenant_managed_app_list, :value).
                  and_return(Hashie::Mash.new({ body: @tenant_managed_app_stub_response,
+                                               status: 200,
+                                               headers: {}}))
+
+  allow(MokiAPI).to receive_message_chain(:action, :value).
+                 and_return(Hashie::Mash.new({ body: @action_stub_response,
                                                status: 200,
                                                headers: {}}))
 end

@@ -141,12 +141,11 @@ describe MokiRuby do
       expect { MokiRuby.action }.to raise_error
     end
 
-    it "retuns an array of IOSProfile objects" do
+    it "retuns an Action object" do
       load_good_stubs
-      data = MokiRuby.action
-      expect(data.count).to eq(2)
-      expect(data.first).to be_kind_of(Action)
-      expect(data.first.name).to eq("MokiTouch 2.0")
+      data = MokiRuby.action("abcd1234-1234-1234-1234-abcdef123456", "b4d71a15­183b­4971­a3bd­d139754a40fe")
+      expect(data).to be_kind_of(Action)
+      expect(data.id).to eq("b4d71a15­183b­4971­a3bd­d139754a40fe")
     end
   end
 end
