@@ -23,6 +23,10 @@ class MokiAPI
     end
   end
 
+  def self.tenant_managed_app_list
+    issue_request(:get, full_url('/iosmanagedapps'), {})
+  end
+
   def self.device_managed_app_list(device_id)
     if DeviceIdentifier.is_udid?(device_id)
       issue_request(:get, full_url("/devices/#{ device_id }/managedapps"), {})

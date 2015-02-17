@@ -111,5 +111,13 @@ describe MokiAPI do
         expect { MokiAPI.get_action("ermishness-nope") }.to raise_error
       end
     end
+
+    it 'hits the iosprofiles endpoint correctly' do
+      expect(MokiAPI).to receive(:issue_request) { |method, url, options|
+        expect(method).to eq(:get)
+        expect(url).to eq("http://localhost:9292/rest/v1/api/tenants/#{ ENV['MOKI_TENANT_ID'] }/iosmanagedapps")
+      }.and_return('{}')
+      MokiAPI.tenant_managed_app_list
+    end
   end
 end
