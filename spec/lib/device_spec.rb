@@ -53,19 +53,17 @@ describe MokiRuby::Device do
   end
 
   describe "#install_app" do
+    it "requires a TenantManagedApp" do
+      expect{ device.install_app('foo') }.to raise_error
+    end
+
     it "calls MokiApi.perform with store app parameters" do
 
-      params = { "action" => "install_app",
-                 "thirdPartyUser" =>  "itsmebro",
-                 "clientName" =>  "Some Client Name",
-                 "itemName"  =>  "MokiTouch2.0",
-                 "notify" =>  true,
-                 "payload" =>  { "ManagementFlags" => 1,
-                                 "identifier" => "com.mokimobility.mokitouch2",
-                                 "version" => "1.1.1" } }
+      tenant_managed_app = TenantManagedApp.from_hash({
+        "name" => "MokiTouch 2.0","identifier" => "com.mokimobility.mokitouch2", "version" => "1.1.1",
+        "ManagementFlags" => 0, "ManifestURL" => "some url" })
 
-      
-     response =  { 
+      response =  { 
                    "id" => "b4d71a15­183b­4971­a3bd­d139754a40fe",
                    "lastSeen" => 1420583405416,
                    "action" => "install_app",
@@ -79,7 +77,7 @@ describe MokiRuby::Device do
                  }
 
       expect(MokiAPI).to receive_message_chain(:perform_action, :value).and_return(Hashie::Mash.new({ body: response, status: 200, headers: {} }))
-      device.install_app
+      device.install_app(tenant_managed_app)
     end
   end
 end
