@@ -39,6 +39,7 @@ The following methods have been built out:
   tenant.
 - `MokiRuby.device_managed_apps(device_id)` asks for all managed apps on
   a specific device, provided in a simplified list.
+- `MokiRuby.action(device_id, action_id)` asks for a device\'s action
 
 ## Contributing
 
