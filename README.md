@@ -21,11 +21,25 @@ Or install it yourself as:
 
 ## Usage
 
-Nothing to use yet.
+Make sure to set the following environment variables:
+
+```
+ENV['MOKI_API_URL']
+ENV['MOKI_TENANT_ID']
+ENV['MOKI_API_KEY']
+```
+
+The following methods have been built out:
+
+- `MokiRuby.ios_profiles` asks for all current profiles associated with this tenant.
+- `MokiRuby.device_profiles(device_id)` asks for all profiles installed
+  on the provided device. `device_id` must be a UDID or a serial number.
+- `MokiRuby.device_managed_apps(device_id)` asks for all managed apps on
+  a specific device, provided in a simplified list.
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/moki_ruby/fork )
+1. Fork it ( https://github.com/bellycard/moki_ruby/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
