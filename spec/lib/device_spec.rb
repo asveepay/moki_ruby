@@ -47,8 +47,14 @@ describe MokiRuby::Device do
 
   describe "#profiles" do
     it "calls MokiAPI.device_profile_list with correct params" do
-      expect(MokiAPI).to receive(:device_profile_list).with(udid)
+      expect(MokiAPI).to receive_message_chain(:device_profile_list, :value).and_return(Hashie::Mash.new({ body: [] }))
       device.profiles
+    end
+
+    it "returns an array of device profiles" do
+      load_good_stubs
+      profiles = device.profiles
+      expect(profiles.map { |p| p.class }.uniq).to eq [IOSProfile]
     end
   end
 

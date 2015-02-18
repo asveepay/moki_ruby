@@ -22,7 +22,8 @@ module MokiRuby
     end
 
     def profiles
-      MokiAPI.device_profile_list(device_id_param)
+      data = MokiAPI.device_profile_list(device_id_param).value
+      data.body.map { |profile| IOSProfile.from_hash(profile) }
     end
 
     def install_app(tenant_managed_app)
@@ -35,18 +36,23 @@ module MokiRuby
     private
 
     def install_hash(tenant_managed_app)
-      {
-        "action" => "install_app",
-        "thirdPartyUser" => "itsmebro",
-        "clientName" => "iPad10",
-        "itemName "  => tenant_managed_app.name,
-        "notify" => true,
-        "payload" => {
-                       "ManagementFlags" => tenant_managed_app.management_flags,
-                       "ManifestURL" => tenant_managed_app.manifest_url,
+      {}.tap do |h|
+        h["action"] = "install_app",
+        h["thirdPartyUser"] = "itsmebro",
+        h["clientName"] = "iPad10",
+        h["itemName"] = tenant_managed_app.name,
+        h["notify"] = true,
+        h["payload"] = {
+                       "ManagementFlags" => determine_management_flag(tenant_managed_app),
                        "identifier" => tenant_managed_app.identifier,
+                       "iTunesStoreID" => tenant_managed_app.itunes_store_id,
+                       "ManifestURL" => tenant_managed_app.manifest_url,
                        "version" => tenant_managed_app.version }
-      }
+      end
+    end
+
+    def determine_management_flag(tenant_managed_app)
+      tenant_managed_app.manifest_url ? 1 : 0
     end
 
     def is_serial?(id)
