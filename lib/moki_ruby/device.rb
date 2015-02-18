@@ -25,25 +25,33 @@ module MokiRuby
       MokiAPI.device_profile_list(device_id_param)
     end
 
-    def install_app
-      params = body_hash.merge({ "action" => 'install_app' })
-      # Not sure how Management Flag is determined
-      params["payload"]["ManagementFlags"] = 1
+    def install_app(tenant_managed_app)
+      raise "Tenant Managed App required" unless tenant_managed_app && tenant_managed_app.kind_of?(TenantManagedApp)
 
-      MokiAPI.perform_action(device_id_param, params)
+      data = MokiAPI.perform_action(device_id_param, install_hash(tenant_managed_app)).value
+      Action.from_hash(data.body)
     end
 
     private
 
-    def body_hash
-      {
-        "thirdPartyUser" => "itsmebro",
-        "clientName" => "Some Client Name",
-        "itemName" => "MokiTouch2.0",
-        "notify" => true,
-        "payload" => { "identifier" => "com.mokimobility.mokitouch2",
-                       "version" => "1.1.1" }
-      }
+    def install_hash(tenant_managed_app)
+      {}.tap do |h|
+        h["action"] = "install_app",
+        h["thirdPartyUser"] = "itsmebro",
+        h["clientName"] = "iPad10",
+        h["itemName"] = tenant_managed_app.name,
+        h["notify"] = true,
+        h["payload"] = {
+                       "ManagementFlags" => determine_management_flag(tenant_managed_app),
+                       "identifier" => tenant_managed_app.identifier,
+                       "iTunesStoreID" => tenant_managed_app.itunes_store_id,
+                       "ManifestURL" => tenant_managed_app.manifest_url,
+                       "version" => tenant_managed_app.version }
+      end
+    end
+
+    def determine_management_flag(tenant_managed_app)
+      tenant_managed_app.manifest_url ? 1 : 0
     end
 
     def is_serial?(id)
