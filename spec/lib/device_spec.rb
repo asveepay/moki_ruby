@@ -47,8 +47,14 @@ describe MokiRuby::Device do
 
   describe "#profiles" do
     it "calls MokiAPI.device_profile_list with correct params" do
-      expect(MokiAPI).to receive(:device_profile_list).with(udid)
+      expect(MokiAPI).to receive_message_chain(:device_profile_list, :value).and_return(Hashie::Mash.new({ body: [] }))
       device.profiles
+    end
+
+    it "returns an array of device profiles" do
+      load_good_stubs
+      profiles = device.profiles
+      expect(profiles.map { |p| p.class }.uniq).to eq [IOSProfile]
     end
   end
 
@@ -57,7 +63,7 @@ describe MokiRuby::Device do
       expect{ device.install_app('foo') }.to raise_error
     end
 
-    it "calls MokiApi.perform with store app parameters" do
+    it "calls MokiAPI.perform with store app parameters" do
 
       tenant_managed_app = TenantManagedApp.from_hash({
         "name" => "MokiTouch 2.0","identifier" => "com.mokimobility.mokitouch2", "version" => "1.1.1",
@@ -78,6 +84,35 @@ describe MokiRuby::Device do
 
       expect(MokiAPI).to receive_message_chain(:perform_action, :value).and_return(Hashie::Mash.new({ body: response, status: 200, headers: {} }))
       device.install_app(tenant_managed_app)
+    end
+  end
+
+  describe "#managed_apps" do
+    it "calls MokiAPI.device_managed_app_list" do
+      response = []
+      expect(MokiAPI).to receive_message_chain(:device_managed_app_list, :value).and_return(Hashie::Mash.new({ body: response, status: 200, headers: {} }))
+      device.managed_apps
+    end
+
+    it "returns an array of managed_apps" do
+      load_good_stubs
+      apps = device.managed_apps
+      expect(apps.map { |app| app.class }.uniq).to eq [DeviceManagedApp]
+    end
+  end
+  
+  describe "#get_action" do
+    let(:action_id) { "b4d71a15­183b­4971­a3bd­d139754a40fe" }
+
+    it "calls MokiAPI.action" do
+      expect(MokiAPI).to receive_message_chain(:action, :value).and_return(Hashie::Mash.new({ body: {}, status: 200, headers: {} }))
+      device.get_action(action_id)
+    end
+
+    it "returns an Action object" do
+      load_good_stubs
+      action = device.get_action(action_id)
+      expect(action).to be_kind_of(Action)
     end
   end
 end

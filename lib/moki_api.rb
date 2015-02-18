@@ -22,13 +22,7 @@ class MokiAPI
   end
 
   def self.device_managed_app_list(device_id)
-    if DeviceIdentifier.is_udid?(device_id)
-      issue_request(:get, full_url("/devices/#{ device_id }/managedapps"), {})
-    elsif DeviceIdentifier.is_serial?(device_id)
-      issue_request(:get, full_url("/devices/sn-!-#{ device_id }/managedapps"), {})
-    else
-      raise "Must pass a serial number or UDID to get device profile list"
-    end
+    issue_request(:get, full_url("/devices/#{ device_id }/managedapps"), {})
   end
 
   def self.perform_action(device_id, body_hash)
@@ -36,15 +30,7 @@ class MokiAPI
   end
 
   def self.action(device_id, action_id)
-    raise "Must pass an action id" unless action_id
-
-    if DeviceIdentifier.is_udid?(device_id)
-      issue_request(:get, full_url("/devices/#{ device_id }/actions/#{ action_id }"), {})
-    elsif DeviceIdentifier.is_serial?(device_id)
-      issue_request(:get, full_url("/devices/sn-!-#{ device_id }/actions/#{ action_id }"), {})
-    else
-      raise "Must pass a serial number or UDID to get device profile list"
-    end
+    issue_request(:get, full_url("/devices/#{ device_id }/actions/#{ action_id }"), {})
   end
 
   def self.full_url(path)

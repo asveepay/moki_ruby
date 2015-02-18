@@ -22,13 +22,24 @@ module MokiRuby
     end
 
     def profiles
-      MokiAPI.device_profile_list(device_id_param)
+      data = MokiAPI.device_profile_list(device_id_param).value
+      data.body.map { |profile| IOSProfile.from_hash(profile) }
+    end
+
+    def managed_apps
+      data = MokiAPI.device_managed_app_list(device_id_param).value
+      data.body.map { |app| DeviceManagedApp.from_hash(app) }
     end
 
     def install_app(tenant_managed_app)
       raise "Tenant Managed App required" unless tenant_managed_app && tenant_managed_app.kind_of?(TenantManagedApp)
 
       data = MokiAPI.perform_action(device_id_param, install_hash(tenant_managed_app)).value
+      Action.from_hash(data.body)
+    end
+
+    def get_action(action_id)
+      data = MokiAPI.action(device_id_param, action_id).value
       Action.from_hash(data.body)
     end
 
