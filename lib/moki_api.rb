@@ -3,7 +3,6 @@ require 'faraday_middleware'
 require 'celluloid/io'
 require 'future_wrapper'
 require 'hashie'
-require 'moki_ruby/device_identifier'
 
 class MokiAPI
   include Celluloid::IO
