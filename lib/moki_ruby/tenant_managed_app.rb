@@ -26,4 +26,16 @@ class TenantManagedApp
       "iTunesStoreID" => self.itunes_store_id,
       "ManifestURL" => self.manifest_url }
   end
+
+  def management_flag
+    (!manifest_url.nil? && manifest_url != "") ? 1 : 0
+  end
+
+  def external_locator_hash
+    if manifest_url && manifest_url != ""
+      { "ManifestURL" => manifest_url }
+    else
+      { "iTunesStoreID" => itunes_store_id }
+    end
+  end
 end

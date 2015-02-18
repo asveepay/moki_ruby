@@ -69,7 +69,7 @@ describe MokiRuby::Device do
         "name" => "MokiTouch 2.0","identifier" => "com.mokimobility.mokitouch2", "version" => "1.1.1",
         "ManagementFlags" => 0, "ManifestURL" => "some url" })
 
-      response =  { 
+      response =  {
                    "id" => "b4d71a15­183b­4971­a3bd­d139754a40fe",
                    "lastSeen" => 1420583405416,
                    "action" => "install_app",
@@ -100,7 +100,7 @@ describe MokiRuby::Device do
       expect(apps.map { |app| app.class }.uniq).to eq [DeviceManagedApp]
     end
   end
-  
+
   describe "#get_action" do
     let(:action_id) { "b4d71a15­183b­4971­a3bd­d139754a40fe" }
 

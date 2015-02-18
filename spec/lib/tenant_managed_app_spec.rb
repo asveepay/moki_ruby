@@ -36,4 +36,28 @@ describe TenantManagedApp do
 
     expect(app.to_hash).to eq(response_hash)
   end
+
+  describe "management_flag" do
+    it "returns 1 if the device has a manifest url" do
+      app = TenantManagedApp.from_hash({"ManifestURL" => "https://www.mokimanage.com"})
+      expect(app.management_flag).to eq(1)
+    end
+
+    it "returns 0 if the device has an iTunesStoreID" do
+      app = TenantManagedApp.from_hash({"iTunesStoreID" => "733151730"})
+      expect(app.management_flag).to eq(0)
+    end
+  end
+
+  describe "external_locator_hash" do
+    it "returns a hash with the manifest url if it has one" do
+      app = TenantManagedApp.from_hash({"ManifestURL" => "https://www.mokimanage.com"})
+      expect(app.external_locator_hash).to eq({"ManifestURL" => "https://www.mokimanage.com"})
+    end
+
+    it "returns a hash with the itunes store id if it does not have a manifest url" do
+      app = TenantManagedApp.from_hash({"iTunesStoreID" => "733151730"})
+      expect(app.external_locator_hash).to eq({"iTunesStoreID" => "733151730"})
+    end
+  end
 end

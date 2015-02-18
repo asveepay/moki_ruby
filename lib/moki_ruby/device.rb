@@ -48,21 +48,16 @@ module MokiRuby
     def install_hash(tenant_managed_app)
       {}.tap do |h|
         h["action"] = "install_app",
-        h["thirdPartyUser"] = "itsmebro",
-        h["clientName"] = "iPad10",
+        h["thirdPartyUser"] = "moki_ruby",
+        h["clientName"] = "MokiRuby",
         h["itemName"] = tenant_managed_app.name,
         h["notify"] = true,
         h["payload"] = {
-                       "ManagementFlags" => determine_management_flag(tenant_managed_app),
-                       "identifier" => tenant_managed_app.identifier,
-                       "iTunesStoreID" => tenant_managed_app.itunes_store_id,
-                       "ManifestURL" => tenant_managed_app.manifest_url,
-                       "version" => tenant_managed_app.version }
+                         "ManagementFlags" => tenant_managed_app.management_flag,
+                         "identifier" => tenant_managed_app.identifier,
+                         "version" => tenant_managed_app.version
+                       }.merge(tenant_managed_app.external_locator_hash)
       end
-    end
-
-    def determine_management_flag(tenant_managed_app)
-      tenant_managed_app.manifest_url ? 1 : 0
     end
 
     def is_serial?(id)
