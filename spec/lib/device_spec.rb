@@ -100,4 +100,19 @@ describe MokiRuby::Device do
       expect(apps.map { |app| app.class }.uniq).to eq [DeviceManagedApp]
     end
   end
+  
+  describe "#get_action" do
+    let(:action_id) { "b4d71a15­183b­4971­a3bd­d139754a40fe" }
+
+    it "calls MokiAPI.action" do
+      expect(MokiAPI).to receive_message_chain(:action, :value).and_return(Hashie::Mash.new({ body: {}, status: 200, headers: {} }))
+      device.get_action(action_id)
+    end
+
+    it "returns an Action object" do
+      load_good_stubs
+      action = device.get_action(action_id)
+      expect(action).to be_kind_of(Action)
+    end
+  end
 end

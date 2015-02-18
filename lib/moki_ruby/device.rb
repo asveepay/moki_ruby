@@ -38,6 +38,11 @@ module MokiRuby
       Action.from_hash(data.body)
     end
 
+    def get_action(action_id)
+      data = MokiAPI.action(device_id_param, action_id).value
+      Action.from_hash(data.body)
+    end
+
     private
 
     def install_hash(tenant_managed_app)
