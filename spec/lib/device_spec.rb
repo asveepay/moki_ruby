@@ -63,7 +63,7 @@ describe MokiRuby::Device do
       expect{ device.install_app('foo') }.to raise_error
     end
 
-    it "calls MokiApi.perform with store app parameters" do
+    it "calls MokiAPI.perform with store app parameters" do
 
       tenant_managed_app = TenantManagedApp.from_hash({
         "name" => "MokiTouch 2.0","identifier" => "com.mokimobility.mokitouch2", "version" => "1.1.1",
@@ -84,6 +84,20 @@ describe MokiRuby::Device do
 
       expect(MokiAPI).to receive_message_chain(:perform_action, :value).and_return(Hashie::Mash.new({ body: response, status: 200, headers: {} }))
       device.install_app(tenant_managed_app)
+    end
+  end
+
+  describe "#managed_apps" do
+    it "calls MokiAPI.device_managed_app_list" do
+      response = []
+      expect(MokiAPI).to receive_message_chain(:device_managed_app_list, :value).and_return(Hashie::Mash.new({ body: response, status: 200, headers: {} }))
+      device.managed_apps
+    end
+
+    it "returns an array of managed_apps" do
+      load_good_stubs
+      apps = device.managed_apps
+      expect(apps.map { |app| app.class }.uniq).to eq [DeviceManagedApp]
     end
   end
 end

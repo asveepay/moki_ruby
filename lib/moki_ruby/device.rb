@@ -26,6 +26,11 @@ module MokiRuby
       data.body.map { |profile| IOSProfile.from_hash(profile) }
     end
 
+    def managed_apps
+      data = MokiAPI.device_managed_app_list(device_id_param).value
+      data.body.map { |app| DeviceManagedApp.from_hash(app) }
+    end
+
     def install_app(tenant_managed_app)
       raise "Tenant Managed App required" unless tenant_managed_app && tenant_managed_app.kind_of?(TenantManagedApp)
 
