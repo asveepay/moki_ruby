@@ -74,7 +74,7 @@ private
         status: response.status,
         headers: response.headers
       })
-    rescue => e
+    rescue
       response
     end
   end
