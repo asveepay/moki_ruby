@@ -60,29 +60,20 @@ describe MokiRuby::Device do
 
   describe "#install_app" do
     it "requires a TenantManagedApp" do
-      expect{ device.install_app('foo') }.to raise_error
+      expect { device.install_app('foo') }.to raise_error
     end
 
     it "calls MokiAPI.perform with store app parameters" do
+      load_good_stubs
 
-      tenant_managed_app = TenantManagedApp.from_hash({
-        "name" => "MokiTouch 2.0","identifier" => "com.mokimobility.mokitouch2", "version" => "1.1.1",
-        "ManagementFlags" => 0, "ManifestURL" => "some url" })
+      tenant_managed_app = TenantManagedApp.from_hash({ "name" => "MokiTouch 2.0",
+                                                        "identifier" => "com.mokimobility.mokitouch2",
+                                                        "version" => "1.1.1",
+                                                        "ManagementFlags" => 0,
+                                                        "ManifestURL" => "some url" })
 
-      response =  {
-                   "id" => "b4d71a15­183b­4971­a3bd­d139754a40fe",
-                   "lastSeen" => 1420583405416,
-                   "action" => "install_app",
-                   "status" => "created",
-                   "clientName" => "Web",
-                   "itemName" => "Profile Name",
-                   "thirdPartyUser" => "itsmebro",
-                   "payload" =>  { "ManagementFlags" => 1,
-                                   "identifier" => "com.mokimobility.mokitouch2",
-                                   "version" => "1.1.1" }
-                 }
-
-      expect(MokiAPI).to receive_message_chain(:perform_action, :value).and_return(Hashie::Mash.new({ body: response, status: 200, headers: {} }))
+      expect(MokiAPI).to receive(:perform_action).with(udid, tenant_managed_app.install_hash)
+                                                 .and_return(Hashie::Mash.new(value: { body: @action_stub_response }))
       device.install_app(tenant_managed_app)
     end
   end

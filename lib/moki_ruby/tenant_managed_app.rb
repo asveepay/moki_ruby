@@ -27,6 +27,21 @@ class TenantManagedApp
       "ManifestURL" => self.manifest_url }
   end
 
+  def install_hash
+    {
+      "action" => "install_app",
+      "thirdPartyUser" => "moki_ruby",
+      "clientName" => "MokiRuby",
+      "itemName" => self.name,
+      "notify" => true,
+      "payload" => {
+                     "ManagementFlags" => self.management_flag,
+                     "identifier" => self.identifier,
+                     "version" => self.version
+                   }.merge(self.external_locator_hash)
+    }
+  end
+
   def management_flag
     (!manifest_url.nil? && manifest_url != "") ? 1 : 0
   end

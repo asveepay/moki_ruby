@@ -60,4 +60,27 @@ describe TenantManagedApp do
       expect(app.external_locator_hash).to eq({"iTunesStoreID" => "733151730"})
     end
   end
+
+  describe "install_hash" do
+    it "returns a specially crafted action hash for installing the app" do
+      app = TenantManagedApp.from_hash(response_hash)
+      expect(app.install_hash).to eq({ "action" => "install_app",
+                                       "thirdPartyUser" => "moki_ruby",
+                                       "clientName" => "MokiRuby",
+                                       "itemName" => "MokiTouch 2.0",
+                                       "notify" => true,
+                                       "payload" => {
+                                         "ManagementFlags" => 1,
+                                         "identifier" => "com.mokimobility.mokitouch2",
+                                         "version" => "1.1.1",
+                                         "ManifestURL" => "http://www.mokimanage.com/app" }})
+    end
+
+    it "will send the itunes store id if missing the manifest url" do
+      response_hash.delete("ManifestURL")
+      app = TenantManagedApp.from_hash(response_hash)
+      expect(app.install_hash["payload"]["ManifestURL"]).to be_nil
+      expect(app.install_hash["payload"]["iTunesStoreID"]).to eq(response_hash["iTunesStoreID"])
+    end
+  end
 end
