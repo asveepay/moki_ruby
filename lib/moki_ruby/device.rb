@@ -13,14 +13,6 @@ module MokiRuby
       @id = identifier
     end
 
-    def device_id_param
-      if identifier_type == :serial
-        "sn-!-#{ id }"
-      else
-        id
-      end
-    end
-
     def profiles
       data = MokiAPI.device_profile_list(device_id_param).value
       data.body.map { |profile| IOSProfile.from_hash(profile) }
@@ -55,6 +47,14 @@ module MokiRuby
     def get_action(action_id)
       data = MokiAPI.action(device_id_param, action_id).value
       Action.from_hash(data.body)
+    end
+
+    def device_id_param
+      if identifier_type == :serial
+        "sn-!-#{ id }"
+      else
+        id
+      end
     end
 
     private
