@@ -31,4 +31,24 @@ describe IOSProfile do
 
     expect(profile.to_hash).to eq(response_hash)
   end
+
+  it "will return a hash for installing" do
+    profile = IOSProfile.from_hash(response_hash)
+    expect(profile.install_hash).to eq({ "action" => "installprofile",
+                                         "thirdPartyUser" => "moki_ruby",
+                                         "clientName" => "MokiRuby",
+                                         "itemName" => "Profile Name",
+                                         "notify" => true,
+                                         "payload" => "{01234699-5767-8abc-d123-ffffffffffff}" })
+  end
+
+  it "will return a hash for removal" do
+    profile = IOSProfile.from_hash(response_hash)
+    expect(profile.removal_hash).to eq({ "action" => "removeprofile",
+                                         "thirdPartyUser" => "moki_ruby",
+                                         "clientName" => "MokiRuby",
+                                         "itemName" => "Profile Name",
+                                         "notify" => true,
+                                         "payload" => "{abcdef12345-abc-123-ffeea.test}" })
+  end
 end

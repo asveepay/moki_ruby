@@ -23,4 +23,24 @@ class IOSProfile
       "identifier" => self.identifier
     }
   end
+
+  def install_hash
+    actionable_hash.merge({ "action" => "installprofile",
+                            "payload" => "{#{ self.id }}" })
+  end
+
+  def removal_hash
+    actionable_hash.merge({ "action" => "removeprofile",
+                            "payload" => "{#{ self.identifier }}" })
+  end
+
+private
+  def actionable_hash
+    {
+      "thirdPartyUser" => "moki_ruby",
+      "clientName" => "MokiRuby",
+      "itemName" => self.name,
+      "notify" => true
+    }
+  end
 end
