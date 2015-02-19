@@ -1,4 +1,5 @@
-require "moki_ruby/version"
+require 'require_all'
+require_rel "./"
 
 module MokiRuby
   def self.ios_profiles
