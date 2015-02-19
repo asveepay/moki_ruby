@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    moki_ruby (0.0.1)
+    moki_ruby (0.0.2)
       celluloid
       celluloid-io
       faraday
