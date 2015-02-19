@@ -20,8 +20,6 @@ Or install it yourself as:
 
     $ gem install moki_ruby
 
-## Usage
-
 Make sure to set the following environment variables:
 
 ```
@@ -30,16 +28,46 @@ ENV['MOKI_TENANT_ID']
 ENV['MOKI_API_KEY']
 ```
 
+## Usage
+
+Device management can be done at the Tenant Level (across all devices)
+or at the individual device level.
+
+### Tenant Methods
+
 The following methods have been built out:
 
-- `MokiRuby.ios_profiles` asks for all current profiles associated with this tenant.
-- `MokiRuby.device_profiles(device_id)` asks for all profiles installed
-  on the provided device. `device_id` must be a UDID or a serial number.
+- `MokiRuby.ios_profiles` asks for all current profiles associated with this
+  tenant. This will return an array of `IOSProfile` objects.
 - `MokiRuby.tenant_managed_apps` asks for all apps associaited with this
-  tenant.
-- `MokiRuby.device_managed_apps(device_id)` asks for all managed apps on
-  a specific device, provided in a simplified list.
-- `MokiRuby.action(device_id, action_id)` asks for a device\'s action
+  tenant. This will return an array of `TenantManagedApp` objects.
+
+### Device Methods
+
+First, create a device through one of the following approaches:
+
+```
+MokiRuby::Device.new(serial_number)
+MokiRuby::Device.new(udid)
+```
+
+Using this device, there are several methods available:
+
+- `device.profiles` returns all profiles currently installed on a
+  device. This will return an array of `IOSProfile` objects.
+- `device.managed_apps` returns all managed applications installed on a
+  device. This will return an array of `DeviceManagedApp` objects.
+- `device.install_app(app)` takes in a `TenantManagedApp` object, and
+  will install the given application on the device. Returns an
+  `Action` object, for tracking in the future.
+- `device.add_profile(profile)` takes in an `IOSProfile` object, and
+  will install the given profile on the device. Returns an `Action`
+  object, for tracking in the future.
+- `device.remove_profile(profile)` take in an `IOSProfile` object, and
+  will remove the given profile from the device. Returns an `Action`
+  object, for tracking in the future.
+- `device.get_action(action_id)` will take in an `id` from an `Action`
+  object, and return an updated `Action` object.
 
 ## Contributing
 
