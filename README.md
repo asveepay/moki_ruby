@@ -3,8 +3,8 @@
 [![travis-status](https://travis-ci.org/bellycard/moki_ruby.svg)](https://travis-ci.org/bellycard/moki_ruby) [![Gem
 Version](https://badge.fury.io/rb/moki_ruby.svg)](http://badge.fury.io/rb/moki_ruby)
 
-A ruby gem for interacting with the Moki API, as a part of Moki Total
-Control and Moki Management.
+A ruby gem for interacting with the Moki API, as a part of
+[Moki Total Control](http://www.moki.com) and Moki Management.
 
 ## Installation
 
@@ -68,6 +68,21 @@ Using this device, there are several methods available:
   object, for tracking in the future.
 - `device.get_action(action_id)` will take in an `id` from an `Action`
   object, and return an updated `Action` object.
+
+## To do
+
+- Handle cases where device is not found
+- Handle error cases
+- Confirm if profile is on device before adding/removing
+- Confirm if app is on device before installing
+- Add new Moki endpoints
+
+## Special Thanks
+
+Thank you to the Moki team ([GitHub](https://github.com/MokiMobility)),
+especially [Jared](https://github.com/jaredblake),
+[Sam](https://github.com/mokiSam), and
+[Sam](https://github.com/sroskelley).
 
 ## Contributing
 
