@@ -58,6 +58,40 @@ describe MokiRuby::Device do
     end
   end
 
+  describe "#add_profile" do
+    it "requires an IOSProfile" do
+      expect { device.add_profile('erm') }.to raise_error
+    end
+
+    it "calls MokiAPI.perform with the profile's install parameters" do
+      load_good_stubs
+
+      iosprofile = IOSProfile.from_hash(@iosprofiles_stub_response.first)
+
+      expect(MokiAPI).to receive(:perform_action).with(udid, iosprofile.install_hash)
+                                                 .and_return(Hashie::Mash.new(value: { body: @action_stub_response }))
+
+      device.add_profile(iosprofile)
+    end
+  end
+
+  describe "#remove_profile" do
+    it "requires an IOSProfile" do
+      expect { device.remove_profile('erm') }.to raise_error
+    end
+
+    it "calls MokiAPI.perform with the profile's install parameters" do
+      load_good_stubs
+
+      iosprofile = IOSProfile.from_hash(@iosprofiles_stub_response.first)
+
+      expect(MokiAPI).to receive(:perform_action).with(udid, iosprofile.removal_hash)
+                                                 .and_return(Hashie::Mash.new(value: { body: @action_stub_response }))
+
+      device.remove_profile(iosprofile)
+    end
+  end
+
   describe "#install_app" do
     it "requires a TenantManagedApp" do
       expect { device.install_app('foo') }.to raise_error

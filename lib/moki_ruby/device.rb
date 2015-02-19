@@ -38,6 +38,20 @@ module MokiRuby
       Action.from_hash(data.body)
     end
 
+    def add_profile(profile)
+      raise "IOSProfile required" unless profile && profile.is_a?(IOSProfile)
+
+      data = MokiAPI.perform_action(device_id_param, profile.install_hash).value
+      Action.from_hash(data.body)
+    end
+
+    def remove_profile(profile)
+      raise "IOSProfile required" unless profile && profile.is_a?(IOSProfile)
+
+      data = MokiAPI.perform_action(device_id_param, profile.removal_hash).value
+      Action.from_hash(data.body)
+    end
+
     def get_action(action_id)
       data = MokiAPI.action(device_id_param, action_id).value
       Action.from_hash(data.body)
