@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'moki_api'
+require 'moki_ruby/moki_api'
 
 describe MokiAPI do
   describe "missing env variable" do

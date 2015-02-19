@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'celluloid'
   spec.add_dependency 'celluloid-io'
   spec.add_dependency 'hashie'
+  spec.add_dependency 'require_all'
 
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"
