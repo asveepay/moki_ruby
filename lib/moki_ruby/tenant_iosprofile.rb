@@ -1,5 +1,5 @@
 module MokiRuby
-  class IOSProfile
+  class TenantIOSProfile
     attr_accessor :id, :last_seen, :name, :display_name, :description, :identifier
 
     def self.from_hash(input_hash)

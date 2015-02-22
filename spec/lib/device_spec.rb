@@ -54,19 +54,19 @@ describe MokiRuby::Device do
     it "returns an array of device profiles" do
       load_good_stubs
       profiles = device.profiles
-      expect(profiles.map { |p| p.class }.uniq).to eq [IOSProfile]
+      expect(profiles.map { |p| p.class }.uniq).to eq [DeviceIOSProfile]
     end
   end
 
   describe "#add_profile" do
-    it "requires an IOSProfile" do
+    it "requires a TenantIOSProfile" do
       expect { device.add_profile('erm') }.to raise_error
     end
 
     it "calls MokiAPI.perform with the profile's install parameters" do
       load_good_stubs
 
-      iosprofile = IOSProfile.from_hash(@iosprofiles_stub_response.first)
+      iosprofile = TenantIOSProfile.from_hash(@iosprofiles_stub_response.first)
 
       expect(MokiAPI).to receive(:perform_action).with(udid, iosprofile.install_hash)
                                                  .and_return(Hashie::Mash.new(value: { body: @action_stub_response }))
@@ -76,14 +76,14 @@ describe MokiRuby::Device do
   end
 
   describe "#remove_profile" do
-    it "requires an IOSProfile" do
+    it "requires an DeviceIOSProfile" do
       expect { device.remove_profile('erm') }.to raise_error
     end
 
     it "calls MokiAPI.perform with the profile's install parameters" do
       load_good_stubs
 
-      iosprofile = IOSProfile.from_hash(@iosprofiles_stub_response.first)
+      iosprofile = DeviceIOSProfile.from_hash(@iosprofiles_stub_response.first)
 
       expect(MokiAPI).to receive(:perform_action).with(udid, iosprofile.removal_hash)
                                                  .and_return(Hashie::Mash.new(value: { body: @action_stub_response }))

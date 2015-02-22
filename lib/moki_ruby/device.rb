@@ -15,7 +15,7 @@ module MokiRuby
 
     def profiles
       data = MokiAPI.device_profile_list(device_id_param).value
-      data.body.map { |profile| IOSProfile.from_hash(profile) }
+      data.body.map { |profile| DeviceIOSProfile.from_hash(profile) }
     end
 
     def managed_apps
@@ -31,14 +31,14 @@ module MokiRuby
     end
 
     def add_profile(profile)
-      raise "IOSProfile required" unless profile && profile.is_a?(IOSProfile)
+      raise "TenantIOSProfile required" unless profile && profile.is_a?(TenantIOSProfile)
 
       data = MokiAPI.perform_action(device_id_param, profile.install_hash).value
       Action.from_hash(data.body)
     end
 
     def remove_profile(profile)
-      raise "IOSProfile required" unless profile && profile.is_a?(IOSProfile)
+      raise "DeviceIOSProfile required" unless profile && profile.is_a?(DeviceIOSProfile)
 
       data = MokiAPI.perform_action(device_id_param, profile.removal_hash).value
       Action.from_hash(data.body)

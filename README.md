@@ -38,7 +38,7 @@ or at the individual device level.
 The following methods have been built out:
 
 - `MokiRuby.ios_profiles` asks for all current profiles associated with this
-  tenant. This will return an array of `IOSProfile` objects.
+  tenant. This will return an array of `TenantIOSProfile` objects.
 - `MokiRuby.tenant_managed_apps` asks for all apps associaited with this
   tenant. This will return an array of `TenantManagedApp` objects.
 
@@ -54,16 +54,16 @@ MokiRuby::Device.new(udid)
 Using this device, there are several methods available:
 
 - `device.profiles` returns all profiles currently installed on a
-  device. This will return an array of `IOSProfile` objects.
+  device. This will return an array of `DeviceIOSProfile` objects.
 - `device.managed_apps` returns all managed applications installed on a
   device. This will return an array of `DeviceManagedApp` objects.
 - `device.install_app(app)` takes in a `TenantManagedApp` object, and
   will install the given application on the device. Returns an
   `Action` object, for tracking in the future.
-- `device.add_profile(profile)` takes in an `IOSProfile` object, and
+- `device.add_profile(profile)` takes in an `TenantIOSProfile` object, and
   will install the given profile on the device. Returns an `Action`
   object, for tracking in the future.
-- `device.remove_profile(profile)` take in an `IOSProfile` object, and
+- `device.remove_profile(profile)` take in an `DeviceIOSProfile` object, and
   will remove the given profile from the device. Returns an `Action`
   object, for tracking in the future.
 - `device.get_action(action_id)` will take in an `id` from an `Action`
