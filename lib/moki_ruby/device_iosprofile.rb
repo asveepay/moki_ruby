@@ -1,31 +1,36 @@
 module MokiRuby
   class DeviceIOSProfile
-    attr_accessor :id, :last_seen, :name, :display_name, :description, :identifier
+    attr_accessor :display_name, :version, :organization,
+                  :removal_disallowed, :description, :identifier, :content
 
     def self.from_hash(input_hash)
       new_profile = self.new
-      new_profile.id = input_hash["id"]
-      new_profile.last_seen = input_hash["lastSeen"]
-      new_profile.name = input_hash["name"]
-      new_profile.display_name = input_hash["displayName"]
-      new_profile.description = input_hash["description"]
-      new_profile.identifier = input_hash["identifier"]
+
+      new_profile.display_name = input_hash["PayloadDisplayName"]
+      new_profile.version = input_hash["PayloadVersion"]
+      new_profile.organization = input_hash["PayloadOrganization"]
+      new_profile.removal_disallowed = input_hash["PayloadRemovalDisallowed"]
+      new_profile.description = input_hash["PayloadDescription"]
+      new_profile.identifier = input_hash["PayloadIdentifier"]
+      new_profile.content = input_hash["PayloadContent"]
 
       new_profile
     end
 
     def to_hash
       {
-        "id" => self.id,
-        "lastSeen" => self.last_seen,
-        "name" => self.name,
-        "displayName" => self.display_name,
-        "description" => self.description,
-        "identifier" => self.identifier
+        "PayloadDisplayName" => self.display_name,
+        "PayloadVersion" => self.version,
+        "PayloadOrganization" => self.organization,
+        "PayloadRemovalDisallowed" => self.removal_disallowed,
+        "PayloadDescription" => self.description,
+        "PayloadIdentifier" => self.identifier,
+        "PayloadContent" => self.content
       }
     end
 
     def install_hash
+      raise "under construction"
       actionable_hash.merge({ "action" => "installprofile",
                               "payload" => "{#{ self.id }}" })
     end
@@ -40,7 +45,7 @@ module MokiRuby
       {
         "thirdPartyUser" => "moki_ruby",
         "clientName" => "MokiRuby",
-        "itemName" => self.name,
+        "itemName" => self.display_name,
         "notify" => true
       }
     end
