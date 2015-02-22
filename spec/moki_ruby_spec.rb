@@ -19,11 +19,11 @@ describe MokiRuby do
       expect { MokiRuby.iosprofiles }.to raise_error
     end
 
-    it "retuns an array of IOSProfile objects" do
+    it "retuns an array of TenantIOSProfile objects" do
       load_good_stubs
       data = MokiRuby.ios_profiles
       expect(data.count).to eq(4)
-      expect(data.first).to be_kind_of(IOSProfile)
+      expect(data.first).to be_kind_of(TenantIOSProfile)
       expect(data.first.name).to eq("Test Profile 1")
     end
   end

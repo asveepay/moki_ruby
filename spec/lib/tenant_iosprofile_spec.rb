@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'moki_ruby/iosprofile'
+require 'moki_ruby/tenant_iosprofile'
 
-describe IOSProfile do
+describe TenantIOSProfile do
   let(:response_hash) { { "id" => "01234699-5767-8abc-d123-ffffffffffff",
                           "lastSeen" => 1413913980475,
                           "name" => "Profile Name",
@@ -10,7 +10,7 @@ describe IOSProfile do
                           "identifier" => "abcdef12345-abc-123-ffeea.test" } }
 
   it "will load from a hash with string keys" do
-    profile = IOSProfile.from_hash(response_hash)
+    profile = TenantIOSProfile.from_hash(response_hash)
 
     expect(profile.id).to eq(response_hash["id"])
     expect(profile.last_seen).to eq(response_hash["lastSeen"])
@@ -21,7 +21,7 @@ describe IOSProfile do
   end
 
   it "will convert the response to a hash" do
-    profile = IOSProfile.new
+    profile = TenantIOSProfile.new
     profile.id = response_hash["id"]
     profile.last_seen = response_hash["lastSeen"]
     profile.name = response_hash["name"]
@@ -33,7 +33,7 @@ describe IOSProfile do
   end
 
   it "will return a hash for installing" do
-    profile = IOSProfile.from_hash(response_hash)
+    profile = TenantIOSProfile.from_hash(response_hash)
     expect(profile.install_hash).to eq({ "action" => "installprofile",
                                          "thirdPartyUser" => "moki_ruby",
                                          "clientName" => "MokiRuby",
@@ -43,7 +43,7 @@ describe IOSProfile do
   end
 
   it "will return a hash for removal" do
-    profile = IOSProfile.from_hash(response_hash)
+    profile = TenantIOSProfile.from_hash(response_hash)
     expect(profile.removal_hash).to eq({ "action" => "removeprofile",
                                          "thirdPartyUser" => "moki_ruby",
                                          "clientName" => "MokiRuby",

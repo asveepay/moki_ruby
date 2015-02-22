@@ -4,7 +4,7 @@ require_rel "./"
 module MokiRuby
   def self.ios_profiles
     data = MokiAPI.ios_profiles.value
-    data.body.map { |profile| IOSProfile.from_hash(profile) }
+    data.body.map { |profile| TenantIOSProfile.from_hash(profile) }
   end
 
   def self.tenant_managed_apps
