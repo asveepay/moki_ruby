@@ -15,11 +15,15 @@ module MokiRuby
 
     def profiles
       data = MokiAPI.device_profile_list(device_id_param).value
+      return nil unless data.status == 200
+
       data.body.map { |profile| DeviceIOSProfile.from_hash(profile) }
     end
 
     def managed_apps
       data = MokiAPI.device_managed_app_list(device_id_param).value
+      return nil unless data.status == 200
+
       data.body.map { |app| DeviceManagedApp.from_hash(app) }
     end
 
@@ -27,6 +31,8 @@ module MokiRuby
       raise "Tenant Managed App required" unless tenant_managed_app && tenant_managed_app.kind_of?(TenantManagedApp)
 
       data = MokiAPI.perform_action(device_id_param, tenant_managed_app.install_hash).value
+      return nil unless data.status == 200
+
       Action.from_hash(data.body)
     end
 
@@ -34,6 +40,8 @@ module MokiRuby
       raise "TenantIOSProfile required" unless profile && profile.is_a?(TenantIOSProfile)
 
       data = MokiAPI.perform_action(device_id_param, profile.install_hash).value
+      return nil unless data.status == 200
+
       Action.from_hash(data.body)
     end
 
@@ -41,11 +49,15 @@ module MokiRuby
       raise "DeviceIOSProfile required" unless profile && profile.is_a?(DeviceIOSProfile)
 
       data = MokiAPI.perform_action(device_id_param, profile.removal_hash).value
+      return nil unless data.status == 200
+
       Action.from_hash(data.body)
     end
 
     def get_action(action_id)
       data = MokiAPI.action(device_id_param, action_id).value
+      return nil unless data.status == 200
+
       Action.from_hash(data.body)
     end
 
