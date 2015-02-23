@@ -56,6 +56,11 @@ describe MokiRuby::Device do
       profiles = device.profiles
       expect(profiles.map { |p| p.class }.uniq).to eq [DeviceIOSProfile]
     end
+
+    it "returns nil if the device can not be found" do
+      load_bad_stubs
+      expect(device.profiles).to be_nil
+    end
   end
 
   describe "#add_profile" do
@@ -73,6 +78,12 @@ describe MokiRuby::Device do
 
       device.add_profile(iosprofile)
     end
+
+    it "returns nil if the device was not found" do
+      load_bad_stubs
+      iosprofile = TenantIOSProfile.from_hash(@iosprofiles_stub_response.first)
+      expect(device.add_profile(iosprofile)).to be_nil
+    end
   end
 
   describe "#remove_profile" do
@@ -83,12 +94,18 @@ describe MokiRuby::Device do
     it "calls MokiAPI.perform with the profile's install parameters" do
       load_good_stubs
 
-      iosprofile = DeviceIOSProfile.from_hash(@iosprofiles_stub_response.first)
+      iosprofile = DeviceIOSProfile.from_hash(@device_iosprofiles_stub_response.first)
 
       expect(MokiAPI).to receive(:perform_action).with(udid, iosprofile.removal_hash)
                                                  .and_return(Hashie::Mash.new(value: { body: @action_stub_response }))
 
       device.remove_profile(iosprofile)
+    end
+
+    it "returns nil if the device was not found" do
+      load_bad_stubs
+      iosprofile = TenantIOSProfile.from_hash(@iosprofiles_stub_response.first)
+      expect(device.add_profile(iosprofile)).to be_nil
     end
   end
 
@@ -110,6 +127,11 @@ describe MokiRuby::Device do
                                                  .and_return(Hashie::Mash.new(value: { body: @action_stub_response }))
       device.install_app(tenant_managed_app)
     end
+
+    it "returns nil if the device was not found" do
+      load_bad_stubs
+      expect(device.install_app(TenantManagedApp.new)).to be_nil
+    end
   end
 
   describe "#managed_apps" do
@@ -123,6 +145,11 @@ describe MokiRuby::Device do
       load_good_stubs
       apps = device.managed_apps
       expect(apps.map { |app| app.class }.uniq).to eq [DeviceManagedApp]
+    end
+
+    it "returns nil if the device was not found" do
+      load_bad_stubs
+      expect(device.managed_apps).to be_nil
     end
   end
 
@@ -138,6 +165,11 @@ describe MokiRuby::Device do
       load_good_stubs
       action = device.get_action(action_id)
       expect(action).to be_kind_of(Action)
+    end
+
+    it "returns nil if the device was not found" do
+      load_bad_stubs
+      expect(device.get_action(action_id)).to be_nil
     end
   end
 end
