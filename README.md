@@ -69,9 +69,11 @@ Using this device, there are several methods available:
 - `device.get_action(action_id)` will take in an `id` from an `Action`
   object, and return an updated `Action` object.
 
+Note that if the device is not found, each method will return `nil`
+instead of an object.
+
 ## To do
 
-- Handle cases where device is not found
 - Handle error cases
 - Confirm if profile is on device before adding/removing
 - Confirm if app is on device before installing
