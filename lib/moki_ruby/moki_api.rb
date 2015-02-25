@@ -33,6 +33,10 @@ module MokiRuby
       issue_request(:get, full_url("/devices/#{ device_id }/actions/#{ action_id }"), {})
     end
 
+    def self.pre_enroll(enroll_hash)
+      issue_request(:post, full_url("/preenroll"), enroll_hash)
+    end
+
     def self.full_url(path)
       raise "No Moki URL Provided. Set ENV['MOKI_API_URL']."    if ENV['MOKI_API_URL'].nil? || ENV['MOKI_API_URL'].empty?
       raise "No Tenant ID Provided. Set ENV['MOKI_TENANT_ID']." if ENV['MOKI_TENANT_ID'].nil? || ENV['MOKI_TENANT_ID'].empty?
