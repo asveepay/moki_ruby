@@ -93,5 +93,18 @@ describe MokiAPI do
         MokiAPI.perform_action('abcd1234-1234-1234-1234-abcdef123456', body_hash)
       end
     end
+
+    describe "pre enroll" do
+      it 'performs the post to preenroll with the provided parameters' do
+        enroll_hash = { "serialNumber" => "ABCDEFGHIJKL", "clientCode" => "12944", "token" => "c12944-token" }
+        expect(MokiAPI).to receive(:issue_request) { |method, url, options|
+          expect(method).to eq(:post)
+          expect(url).to eq("http://localhost:9292/rest/v1/api/tenants/#{ ENV['MOKI_TENANT_ID'] }/preenroll")
+          expect(options).to eq enroll_hash
+        }.and_return('{}')
+
+        MokiAPI.pre_enroll(enroll_hash)
+      end
+    end
   end
 end

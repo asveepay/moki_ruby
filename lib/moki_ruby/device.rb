@@ -1,5 +1,6 @@
 module MokiRuby
   class Device
+    attr_accessor :client_id, :token
     attr :id, :identifier_type
 
     def initialize(identifier)
@@ -61,6 +62,16 @@ module MokiRuby
       Action.from_hash(data.body)
     end
 
+    def pre_enroll
+      data = MokiAPI.pre_enroll(enroll_hash).value
+
+      if data.status == 200
+        return true
+      else
+        return nil
+      end
+    end
+
     def device_id_param
       if identifier_type == :serial
         "sn-!-#{ id }"
@@ -69,7 +80,7 @@ module MokiRuby
       end
     end
 
-    private
+  private
 
     def is_serial?(id)
       (!id.nil? && id.length == 12)
@@ -77,6 +88,21 @@ module MokiRuby
 
     def is_udid?(id)
       !(/\A[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\Z/.match(id)).nil?
+    end
+
+    def enroll_hash
+      raise "Need Serial Number on Device for Enrollment" unless ((identifier_type == :serial) && !id.nil?)
+
+      hash = { "serialNumber" => id,
+               "clientCode" => nil,
+               "token" => nil }
+
+      unless token.nil? || token == "" || client_id.nil? || client_id == ""
+        hash = hash.merge({ "clientCode" => client_id.to_s,
+                            "token" => token })
+      end
+
+      return hash
     end
   end
 end

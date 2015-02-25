@@ -172,4 +172,63 @@ describe MokiRuby::Device do
       expect(device.get_action(action_id)).to be_nil
     end
   end
+
+  describe "#pre_enroll" do
+    it "sends the serial number number along with the specific client id and token" do
+      device = MokiRuby::Device.new(sn)
+      device.client_id = 12944
+      device.token = "c12944-token"
+
+      expected_hash = { "clientCode" => "12944",
+                        "serialNumber" => sn,
+                        "token" => "c12944-token" }
+
+      expect(MokiAPI).to receive(:pre_enroll).with(expected_hash)
+                                             .and_return(Hashie::Mash.new(value: { body: @action_stub_response }))
+      device.pre_enroll
+    end
+
+    it "will error if does not have a serial number" do
+      expect {device.pre_enroll}.to raise_error
+    end
+
+    it "will send blank values for client ID and token if both are missing" do
+      device = MokiRuby::Device.new(sn)
+      expect(MokiAPI).to receive(:pre_enroll).with({ "clientCode" => nil, "serialNumber" => sn, "token" => nil })
+                                             .and_return(Hashie::Mash.new(value: { body: nil }))
+      device.pre_enroll
+    end
+
+    it "will send blank values for both client ID and token if client id is missing" do
+      device = MokiRuby::Device.new(sn)
+      device.token = "who cares"
+      expect(MokiAPI).to receive(:pre_enroll).with({ "clientCode" => nil, "serialNumber" => sn, "token" => nil })
+                                             .and_return(Hashie::Mash.new(value: { body: nil }))
+      device.pre_enroll
+    end
+
+    it "will send blank values for both client ID and token if token is missing" do
+      device = MokiRuby::Device.new(sn)
+      device.client_id = "who cares"
+      expect(MokiAPI).to receive(:pre_enroll).with({ "clientCode" => nil, "serialNumber" => sn, "token" => nil })
+                                             .and_return(Hashie::Mash.new(value: { body: nil }))
+      device.pre_enroll
+    end
+
+    it "will return true if enrollment is successful" do
+      device = MokiRuby::Device.new(sn)
+      allow(MokiAPI).to receive_message_chain(:pre_enroll, :value).
+                     and_return(Hashie::Mash.new({ body: {}, status: 200, headers: {} }))
+
+      expect(device.pre_enroll).to be true
+    end
+
+    it "will return nil if enrollment is not successful" do
+      device = MokiRuby::Device.new(sn)
+      allow(MokiAPI).to receive_message_chain(:pre_enroll, :value).
+                     and_return(Hashie::Mash.new({ body: {}, status: 500, headers: {} }))
+
+      expect(device.pre_enroll).to be_nil
+    end
+  end
 end
