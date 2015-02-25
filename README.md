@@ -68,16 +68,18 @@ Using this device, there are several methods available:
   object, for tracking in the future.
 - `device.get_action(action_id)` will take in an `id` from an `Action`
   object, and return an updated `Action` object.
+- `device.pre_enroll` will send the serial number, `client_id`, and `token`
+  from the device for pre-enrollment, and will return `true` if
+  successful. If `client_id` or `token` are missing, both will be sent
+  as `nil`.
 
 Note that if the device is not found, each method will return `nil`
 instead of an object.
 
 ## To do
 
-- Handle error cases
 - Confirm if profile is on device before adding/removing
 - Confirm if app is on device before installing
-- Add new Moki endpoints
 
 ## Special Thanks
 
