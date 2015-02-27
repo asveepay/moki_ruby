@@ -5,19 +5,18 @@ describe MokiRuby::Device do
   let(:sn) { "ABCDEFGHIJ12" }
   let(:udid) { "abcd1234-1234-1234-1234-abcdef123456" }
   let(:device) { MokiRuby::Device.new(udid) }
+  let(:serial_device) { MokiRuby::Device.new(sn) }
 
   describe 'initialization' do
     context "with serial number" do
       it "is valid" do
-        device = MokiRuby::Device.new(sn)
-        expect(device.id).to eq sn
-        expect(device.identifier_type).to eq :serial
+        expect(serial_device.id).to eq sn
+        expect(serial_device.identifier_type).to eq :serial
       end
     end
 
     context "with UDID" do
       it "is valid" do
-        device = MokiRuby::Device.new(udid)
         expect(device.id).to eq udid
       end
     end
@@ -32,14 +31,12 @@ describe MokiRuby::Device do
   describe "#device_id_param" do
     describe "Serial Number" do
       it "prepends serial number data" do
-        device = MokiRuby::Device.new(sn)
-        expect(device.device_id_param).to eq "sn-!-#{ sn }"
+        expect(serial_device.device_id_param).to eq "sn-!-#{ sn }"
       end
     end
 
     describe "UDID" do
       it "prepends serial number data" do
-        device = MokiRuby::Device.new(udid)
         expect(device.device_id_param).to eq udid
       end
     end
