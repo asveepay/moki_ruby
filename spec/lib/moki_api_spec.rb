@@ -40,9 +40,20 @@ describe MokiAPI do
       MokiAPI.ios_profiles
     end
 
+    describe "device details" do
+      it 'issues a get request using the device parameter' do
+        param = "sn-!-ABCDEFGHIJ12"
+        expect(MokiAPI).to receive(:issue_request) { |method, url, options|
+          expect(method).to eq(:get)
+          expect(url).to eq("http://localhost:9292/rest/v1/api/tenants/#{ ENV['MOKI_TENANT_ID'] }/devices/#{ param }")
+        }.and_return('{}')
+        MokiAPI.device_details(param)
+      end
+    end
+
     describe "device profile list" do
       it 'issues a get request using device parameter' do
-        param = "sn-!-ABCDEFGHIJ12" 
+        param = "sn-!-ABCDEFGHIJ12"
         expect(MokiAPI).to receive(:issue_request) { |method, url, options|
           expect(method).to eq(:get)
           expect(url).to eq("http://localhost:9292/rest/v1/api/tenants/#{ ENV['MOKI_TENANT_ID'] }/devices/#{ param }/profiles")

@@ -5,19 +5,18 @@ describe MokiRuby::Device do
   let(:sn) { "ABCDEFGHIJ12" }
   let(:udid) { "abcd1234-1234-1234-1234-abcdef123456" }
   let(:device) { MokiRuby::Device.new(udid) }
+  let(:serial_device) { MokiRuby::Device.new(sn) }
 
   describe 'initialization' do
     context "with serial number" do
       it "is valid" do
-        device = MokiRuby::Device.new(sn)
-        expect(device.id).to eq sn
-        expect(device.identifier_type).to eq :serial
+        expect(serial_device.id).to eq sn
+        expect(serial_device.identifier_type).to eq :serial
       end
     end
 
     context "with UDID" do
       it "is valid" do
-        device = MokiRuby::Device.new(udid)
         expect(device.id).to eq udid
       end
     end
@@ -32,16 +31,32 @@ describe MokiRuby::Device do
   describe "#device_id_param" do
     describe "Serial Number" do
       it "prepends serial number data" do
-        device = MokiRuby::Device.new(sn)
-        expect(device.device_id_param).to eq "sn-!-#{ sn }"
+        expect(serial_device.device_id_param).to eq "sn-!-#{ sn }"
       end
     end
 
     describe "UDID" do
       it "prepends serial number data" do
-        device = MokiRuby::Device.new(udid)
         expect(device.device_id_param).to eq udid
       end
+    end
+  end
+
+  describe "#load_details" do
+    it "calls MokiAPI.device_details with the correct params" do
+      expect(MokiAPI).to receive_message_chain(:device_details, :value).and_return(Hashie::Mash.new({ body: {} }))
+      device.load_details
+    end
+
+    it "loads the details of the device info response into the object" do
+      load_good_stubs
+      current_id_param = device.device_id_param
+      expected_last_seen = Time.at(@device_info_stub_response["lastSeen"]/1000)
+      expect(device.load_details.device_id_param).to eq(current_id_param)
+      expect(device.nickname).to eq(@device_info_stub_response["nickname"])
+      expect(device.title).to eq(@device_info_stub_response["title"])
+      expect(device.last_seen).to eq(expected_last_seen)
+      expect(device.checked_out).to eq(@device_info_stub_response["checkedOut"])
     end
   end
 
