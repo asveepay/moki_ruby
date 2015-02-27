@@ -53,6 +53,9 @@ MokiRuby::Device.new(udid)
 
 Using this device, there are several methods available:
 
+- `device.load_details` will populate the device's nickname, title, time
+  it was last seen, and whether or not it is checked out. This will
+  return the updated `Device` object.
 - `device.profiles` returns all profiles currently installed on a
   device. This will return an array of `DeviceIOSProfile` objects.
 - `device.managed_apps` returns all managed applications installed on a
