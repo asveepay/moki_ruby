@@ -13,6 +13,10 @@ module MokiRuby
       issue_request(:get, full_url('/iosprofiles'), {})
     end
 
+    def self.device_details(device_id)
+      issue_request(:get, full_url("/devices/#{ device_id }"), {})
+    end
+
     def self.device_profile_list(device_id)
       issue_request(:get, full_url("/devices/#{ device_id }/profiles"), {})
     end

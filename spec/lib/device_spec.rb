@@ -42,6 +42,24 @@ describe MokiRuby::Device do
     end
   end
 
+  describe "#load_details" do
+    it "calls MokiAPI.device_details with the correct params" do
+      expect(MokiAPI).to receive_message_chain(:device_details, :value).and_return(Hashie::Mash.new({ body: {} }))
+      device.load_details
+    end
+
+    it "loads the details of the device info response into the object" do
+      load_good_stubs
+      current_id_param = device.device_id_param
+      expected_last_seen = Time.at(@device_info_stub_response["lastSeen"]/1000)
+      expect(device.load_details.device_id_param).to eq(current_id_param)
+      expect(device.nickname).to eq(@device_info_stub_response["nickname"])
+      expect(device.title).to eq(@device_info_stub_response["title"])
+      expect(device.last_seen).to eq(expected_last_seen)
+      expect(device.checked_out).to eq(@device_info_stub_response["checkedOut"])
+    end
+  end
+
   describe "#profiles" do
     it "calls MokiAPI.device_profile_list with correct params" do
       expect(MokiAPI).to receive_message_chain(:device_profile_list, :value).and_return(Hashie::Mash.new({ body: [] }))

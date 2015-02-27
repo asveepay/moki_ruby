@@ -1,6 +1,7 @@
 module MokiRuby
   class Device
     attr_accessor :client_id, :token
+    attr_reader :nickname, :title, :last_seen, :checked_out
     attr :id, :identifier_type
 
     def initialize(identifier)
@@ -12,6 +13,18 @@ module MokiRuby
         raise "Valid UDID or Serial Number required"
       end
       @id = identifier
+    end
+
+    def load_details
+      data = MokiAPI.device_details(device_id_param).value
+      return nil unless data.status == 200
+
+      @nickname = data.body["nickname"]
+      @title = data.body["title"]
+      @last_seen = Time.at(data.body["lastSeen"]/1000)
+      @checked_out = data.body["checkedOut"]
+
+      return self
     end
 
     def profiles

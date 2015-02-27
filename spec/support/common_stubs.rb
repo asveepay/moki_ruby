@@ -4,6 +4,12 @@ def load_base_stubs
                                 {"id"=>"462d3468-face-0300-4321-abcdef123456", "lastSeen"=>1415637997309, "name"=>"Test Profile 3", "displayName"=>"Test Profile 3", "description"=>"Test Profile 3", "identifier"=>"com.belly.1e968fa0-other03.TestProfile3"},
                                 {"id"=>"fcd2bfb0-face-0400-4321-abcdef123456", "lastSeen"=>1423524426266, "name"=>"Test Profile 4", "displayName"=>"Test Profile 4", "description"=>"Test Profile 4", "identifier"=>"com.belly.1e968fa0-other04.TestProfile4"}]
 
+  @device_info_stub_response = { "udid" => "886e136ec721b8474eb8f64a1c0f29a20881d167",
+                                 "nickname" => "Test iPad",
+                                 "title" => "iPad",
+                                 "lastSeen" => 1425073329355,
+                                 "checkedOut" => false }
+
   @device_managed_app_stub_response = [{ "Status" => "Managed", "appIdentifier" => "com.belly.moki.gem.enterprise", "ManagementFlags" => 1 },
                                        { "Status" => "Managed", "appIdentifier" => "com.belly.flop.html.enterprise", "ManagementFlags" => 0 }]
 
@@ -81,6 +87,11 @@ def load_good_stubs
 
   allow(MokiAPI).to receive_message_chain(:ios_profiles, :value).
                  and_return(Hashie::Mash.new({ body: @iosprofiles_stub_response,
+                                               status: 200,
+                                               headers: {}}))
+
+  allow(MokiAPI).to receive_message_chain(:device_details, :value).
+                 and_return(Hashie::Mash.new({ body: @device_info_stub_response,
                                                status: 200,
                                                headers: {}}))
 
