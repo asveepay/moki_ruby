@@ -76,7 +76,7 @@ module MokiRuby
     end
 
     def pre_enroll
-      data = MokiAPI.pre_enroll(enroll_hash).value
+      data = MokiAPI.pre_enroll([enroll_hash]).value
 
       if data.status == 200
         return true

@@ -198,7 +198,7 @@ describe MokiRuby::Device do
                         "serialNumber" => sn,
                         "token" => "c12944-token" }
 
-      expect(MokiAPI).to receive(:pre_enroll).with(expected_hash)
+      expect(MokiAPI).to receive(:pre_enroll).with([expected_hash])
                                              .and_return(Hashie::Mash.new(value: { body: @action_stub_response }))
       device.pre_enroll
     end
@@ -209,7 +209,7 @@ describe MokiRuby::Device do
 
     it "will send blank values for client ID and token if both are missing" do
       device = MokiRuby::Device.new(sn)
-      expect(MokiAPI).to receive(:pre_enroll).with({ "clientCode" => nil, "serialNumber" => sn, "token" => nil })
+      expect(MokiAPI).to receive(:pre_enroll).with([{ "clientCode" => nil, "serialNumber" => sn, "token" => nil }])
                                              .and_return(Hashie::Mash.new(value: { body: nil }))
       device.pre_enroll
     end
@@ -217,7 +217,7 @@ describe MokiRuby::Device do
     it "will send blank values for both client ID and token if client id is missing" do
       device = MokiRuby::Device.new(sn)
       device.token = "who cares"
-      expect(MokiAPI).to receive(:pre_enroll).with({ "clientCode" => nil, "serialNumber" => sn, "token" => nil })
+      expect(MokiAPI).to receive(:pre_enroll).with([{ "clientCode" => nil, "serialNumber" => sn, "token" => nil }])
                                              .and_return(Hashie::Mash.new(value: { body: nil }))
       device.pre_enroll
     end
@@ -225,7 +225,7 @@ describe MokiRuby::Device do
     it "will send blank values for both client ID and token if token is missing" do
       device = MokiRuby::Device.new(sn)
       device.client_id = "who cares"
-      expect(MokiAPI).to receive(:pre_enroll).with({ "clientCode" => nil, "serialNumber" => sn, "token" => nil })
+      expect(MokiAPI).to receive(:pre_enroll).with([{ "clientCode" => nil, "serialNumber" => sn, "token" => nil }])
                                              .and_return(Hashie::Mash.new(value: { body: nil }))
       device.pre_enroll
     end
