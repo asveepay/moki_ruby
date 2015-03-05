@@ -82,5 +82,10 @@ describe TenantManagedApp do
       expect(app.install_hash["payload"]["ManifestURL"]).to be_nil
       expect(app.install_hash["payload"]["iTunesStoreID"]).to eq(response_hash["iTunesStoreID"])
     end
+
+    it "will replace a null name with an approriate one" do
+      app = TenantManagedApp.from_hash(response_hash.merge({ "name" => nil }))
+      expect(app.install_hash["itemName"]).to eq("iOS App")
+    end
   end
 end

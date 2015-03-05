@@ -33,7 +33,7 @@ module MokiRuby
         "action" => "install_app",
         "thirdPartyUser" => "moki_ruby",
         "clientName" => "MokiRuby",
-        "itemName" => self.name,
+        "itemName" => self.name || "iOS App",
         "notify" => true,
         "payload" => {
                        "ManagementFlags" => self.management_flag,
