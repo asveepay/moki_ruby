@@ -3,7 +3,7 @@ require 'moki_ruby/device'
 
 describe MokiRuby::Device do
   let(:sn) { "ABCDEFGHIJ12" }
-  let(:udid) { "abcd1234-1234-1234-1234-abcdef123456" }
+  let(:udid) { "abcd1234a1234a1234a1234aabcdef123456bbbb" }
   let(:device) { MokiRuby::Device.new(udid) }
   let(:serial_device) { MokiRuby::Device.new(sn) }
 

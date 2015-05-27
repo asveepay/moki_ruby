@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    moki_ruby (0.2.2)
+    moki_ruby (0.2.3)
       celluloid
       celluloid-io
       faraday
@@ -23,7 +23,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.9.1)
       faraday (>= 0.7.4, < 0.10)
-    hashie (3.4.0)
+    hashie (3.4.1)
     hitimes (1.2.2)
     method_source (0.8.2)
     multipart-post (2.0.0)
