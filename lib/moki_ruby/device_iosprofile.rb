@@ -32,12 +32,12 @@ module MokiRuby
     def install_hash
       raise "under construction"
       actionable_hash.merge({ "action" => "installprofile",
-                              "payload" => "{#{ self.id }}" })
+                              "payload" => "#{ self.id }" })
     end
 
     def removal_hash
       actionable_hash.merge({ "action" => "removeprofile",
-                              "payload" => "{#{ self.identifier }}" })
+                              "payload" => "#{ self.identifier }" })
     end
 
   private
