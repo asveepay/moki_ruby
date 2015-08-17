@@ -39,7 +39,7 @@ describe TenantIOSProfile do
                                          "clientName" => "MokiRuby",
                                          "itemName" => "Profile Name",
                                          "notify" => true,
-                                         "payload" => "{01234699-5767-8abc-d123-ffffffffffff}" })
+                                         "payload" => "01234699-5767-8abc-d123-ffffffffffff" })
   end
 
   it "will return a hash for removal" do
