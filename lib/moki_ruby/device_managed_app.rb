@@ -18,5 +18,16 @@ module MokiRuby
         "ManagementFlags" => self.management_flags
       }
     end
+
+    def uninstall_hash
+      {
+        "action" => "remove_app",
+        "thirdPartyUser" => "moki_ruby",
+        "clientName" => "MokiRuby",
+        "itemName" => "iOS App",
+        "notify" => true,
+        "payload" => self.app_identifier
+      }
+    end
   end
 end

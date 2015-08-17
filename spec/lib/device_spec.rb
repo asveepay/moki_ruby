@@ -149,6 +149,29 @@ describe MokiRuby::Device do
     end
   end
 
+  describe "#uninstall_app" do
+    it "requires a DeviceManagedApp" do
+      expect { device.uninstall_app('foo') }.to raise_error
+    end
+
+    it "calls MokiAPI.perform with store app parameters" do
+      load_good_stubs
+
+      device_managed_app = DeviceManagedApp.from_hash({ "Status" => "managed",
+                                                        "appIdentifier" => "com.mokimobility.mokitouch2",
+                                                        "ManagementFlags" => 1 })
+
+      expect(MokiAPI).to receive(:perform_action).with(udid, device_managed_app.uninstall_hash)
+                                                 .and_return(Hashie::Mash.new(value: { body: @action_stub_response }))
+      device.uninstall_app(device_managed_app)
+    end
+
+    it "returns nil if the device was not found" do
+      load_bad_stubs
+      expect(device.uninstall_app(DeviceManagedApp.new)).to be_nil
+    end
+  end
+
   describe "#managed_apps" do
     it "calls MokiAPI.device_managed_app_list" do
       response = []

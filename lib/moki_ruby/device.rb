@@ -50,6 +50,16 @@ module MokiRuby
       Action.from_hash(data.body)
     end
 
+    def uninstall_app(device_managed_app)
+      raise "DeviceManagedApp required" unless device_managed_app && device_managed_app.is_a?(DeviceManagedApp)
+
+      data = MokiAPI.perform_action(device_id_param, device_managed_app.uninstall_hash).value
+      return nil unless data.status == 200
+      binding.pry
+
+      Action.from_hash(data.body)
+    end
+
     def add_profile(profile)
       raise "TenantIOSProfile required" unless profile && profile.is_a?(TenantIOSProfile)
 

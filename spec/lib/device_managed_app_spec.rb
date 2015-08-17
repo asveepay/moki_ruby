@@ -7,18 +7,29 @@ describe DeviceManagedApp do
                           "ManagementFlags" => 0 } }
 
   it "will load from a hash with string keys" do
-    profile = DeviceManagedApp.from_hash(response_hash)
-    expect(profile.status).to eq(response_hash["Status"])
-    expect(profile.app_identifier).to eq(response_hash["appIdentifier"])
-    expect(profile.management_flags).to eq(response_hash["ManagementFlags"])
+    app = DeviceManagedApp.from_hash(response_hash)
+    expect(app.status).to eq(response_hash["Status"])
+    expect(app.app_identifier).to eq(response_hash["appIdentifier"])
+    expect(app.management_flags).to eq(response_hash["ManagementFlags"])
   end
 
   it "will convert the response to a hash" do
-    profile = DeviceManagedApp.new
-    profile.status = "Managed"
-    profile.app_identifier = "com.belly.gem.moki.enterprise"
-    profile.management_flags = 0
+    app = DeviceManagedApp.new
+    app.status = "Managed"
+    app.app_identifier = "com.belly.gem.moki.enterprise"
+    app.management_flags = 0
 
-    expect(profile.to_hash).to eq(response_hash)
+    expect(app.to_hash).to eq(response_hash)
+  end
+
+  it "will return a hash for removal" do
+    app= DeviceManagedApp.from_hash(response_hash)
+    expect(app.uninstall_hash).to eq({
+                                       "action" => "remove_app",
+                                       "thirdPartyUser" => "moki_ruby",
+                                       "clientName" => "MokiRuby",
+                                       "itemName" => "iOS App",
+                                       "notify" => true,
+                                       "payload" => response_hash["appIdentifier"] })
   end
 end

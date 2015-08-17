@@ -63,6 +63,10 @@ Using this device, there are several methods available:
 - `device.install_app(app)` takes in a `TenantManagedApp` object, and
   will install the given application on the device. Returns an
   `Action` object, for tracking in the future.
+- `device.uninstall_app(app)` takes in a `DeviceManagedApp` object, and
+  will uninstall the given application on the device. Returns an
+  `Action` object, for tracking in the future. Note that this must be
+  done on a managed app.
 - `device.add_profile(profile)` takes in an `TenantIOSProfile` object, and
   will install the given profile on the device. Returns an `Action`
   object, for tracking in the future.
