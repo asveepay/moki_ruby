@@ -55,7 +55,6 @@ module MokiRuby
 
       data = MokiAPI.perform_action(device_id_param, device_managed_app.uninstall_hash).value
       return nil unless data.status == 200
-      binding.pry
 
       Action.from_hash(data.body)
     end
